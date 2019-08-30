@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      instanceId: ${spring.application.name}
+      discovery:
+        healthCheckPath: /health
+        healthCheckInterval: 20s
