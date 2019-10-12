@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,10 +35,14 @@ public class CatalogResource {
 	@Autowired
 	WebClient.Builder webClientBuilder;
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	@GetMapping("/{userId}")
 	// @HystrixCommand(fallbackMethod = "getFallbackCatalog") // does not work after
 	// granular control has been added
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
+
+		logger.trace(String.format("getCatalog is called. user id: %s", userId));
 
 		UserRating userRating = ratingDataServiceDelegate.getUserRating(userId);
 		return userRating.getRatings().stream().map(movieInfoServiceDelegate::getCatalogItem)
